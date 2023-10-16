@@ -12,7 +12,7 @@ BIN_DIR = $(BUILD_DIR)/bin
 CC = $(MSPGCC_ROOT_DIR)/bin/msp430-elf-gcc
 
 # Files
-TARGET = blink
+TARGET = $(BIN_DIR)/blink
 MCU = msp430g2553
 
 SOURCES = main.c \
@@ -28,7 +28,7 @@ LDFLAGS = -mmcu=$(MCU) $(addprefix -L,$(LIB_DIRS))
 
 
 # Build
-$(BIN_DIR)/$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) $^ -o $@
 
@@ -38,4 +38,12 @@ $(OBJ_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $^
 
-	
+
+# Phonies
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+clean:
+	$(RM) -rf $(BUILD_DIR)
