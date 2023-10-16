@@ -19,15 +19,11 @@ LDFLAGS = -mmcu=$(MCU) $(addprefix -L,$(LIB_DIRS))
 
 # Build
 blink: main.o led.o
-	$(CC) $(LDFLAGS) led.o main.o -o $(TARGET)
+	$(CC) $(LDFLAGS) $^ -o $@
 
 
 #Compiling
-main.o: main.c
-	$(CC) $(CFLAGS) -c -o main.o main.c
-
-led.o: led.c
-	$(CC) $(CFLAGS) -c -o led.o led.c
-
+%.o: %.c
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 	
