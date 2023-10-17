@@ -1,6 +1,8 @@
 #include <msp430.h>
 #include "led.h"
 
+//void hello() {}
+
 int main(void)
 {
     volatile unsigned int i;
