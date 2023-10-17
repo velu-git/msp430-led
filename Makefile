@@ -2,7 +2,11 @@
 MSPGCC_ROOT_DIR = /home/velu/dev/tools/msp430-gcc
 MSPGCC_BIN_DIR = $(MSPGCC_ROOT_DIR)/bin
 MSPGCC_INCLUDE_DIR = /home/velu/dev/tools/ccs1250/ccs/ccs_base/msp430/include_gcc
-INCLUDE_DIRS = $(MSPGCC_INCLUDE_DIR)
+INCLUDE_DIRS = $(MSPGCC_INCLUDE_DIR) \
+			   ./src/app \
+		       ./eternal/ \
+			   ./
+
 LIB_DIRS = $(MSPGCC_INCLUDE_DIR)
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/obj
@@ -15,8 +19,16 @@ CC = $(MSPGCC_ROOT_DIR)/bin/msp430-elf-gcc
 TARGET = $(BIN_DIR)/blink
 MCU = msp430g2553
 
-SOURCES = main.c \
-		  led.c
+SOURCES_WITH_HEADERS = \
+			src/app/led.c \
+
+MAIN_FILE = src/main.c
+SOURCES = \
+			$(MAIN_FILE) \
+		  	$(SOURCES_WITH_HEADERS)
+
+HEADERS = \
+			$(SOURCES_WITH_HEADERS:.c=.h) \
 
 OBJECT_NAMES = $(SOURCES:.c=.o)
 OBJECTS = $(patsubst %,$(OBJ_DIR)/%,$(OBJECT_NAMES))
@@ -28,7 +40,7 @@ LDFLAGS = -mmcu=$(MCU) $(addprefix -L,$(LIB_DIRS))
 
 
 # Build
-$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) $(HEADERS)
 	mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) $^ -o $@
 
@@ -46,4 +58,5 @@ $(OBJ_DIR)/%.o: %.c
 all: $(TARGET)
 
 clean:
-	$(RM) -rf $(BUILD_DIR)
+
+	$(RM) -rf $(BUILD_DIR)/*
