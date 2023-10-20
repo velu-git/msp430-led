@@ -1,3 +1,5 @@
+// This is test program for blinkin led
+
 #include <msp430.h>
 #include "led.h"
 
