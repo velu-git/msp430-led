@@ -16,7 +16,7 @@ BIN_DIR = $(BUILD_DIR)/bin
 CC = $(MSPGCC_ROOT_DIR)/bin/msp430-elf-gcc
 RM = rm
 CPPCHECK = cppcheck
-
+CLANG_FORMATTER = clang-format-12
 # Files
 TARGET = $(BIN_DIR)/blink
 MCU = msp430g2553
@@ -72,9 +72,9 @@ $(OBJ_DIR)/%.o: %.c
 
 # Phonies
 
-.PHONY: all clean cppcheck
+.PHONY: all clean cppcheck format
 
-all: $(TARGET)
+all: format cppcheck $(TARGET)
 
 clean:
 
@@ -82,3 +82,7 @@ clean:
 
 cppcheck:
 	$(CPPCHECK) $(CPPCHECK_FLAGS) $(SOURCES_FORMAT_CPPCHECK)
+
+
+format:
+	$(CLANG_FORMATTER) -i $(SOURCES)
